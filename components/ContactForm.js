@@ -47,6 +47,17 @@ export default function ContactForm() {
         <div>
           <h3>Recebemos sua mensagem</h3>
           <p>Nosso time vai analisar seu projeto e retornar em breve.</p>
+          
+            href="https://wa.me/5511999101739?text=Ol%C3%A1%2C%20acabei%20de%20enviar%20uma%20solicita%C3%A7%C3%A3o%20de%20or%C3%A7amento%20pelo%20site"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn--outline form-success__whatsapp"
+          >
+            <svg width="18" height="18" aria-hidden="true">
+              <use href="#icon-whatsapp" />
+            </svg>
+            <span className="btn__label">Continuar no WhatsApp</span>
+          </a>
         </div>
       </div>
     );
