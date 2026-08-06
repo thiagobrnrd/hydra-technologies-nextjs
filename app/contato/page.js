@@ -57,6 +57,18 @@ export default function ContatoPage() {
                   <span>Suzano, São Paulo</span>
                 </li>
               </ul>
+
+              
+                href="https://wa.me/5511999101739?text=Ol%C3%A1%2C%20quero%20solicitar%20um%20or%C3%A7amento%20com%20a%20Hydra%20Technologies"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn--outline btn--lg contact-whatsapp"
+              >
+                <svg width="20" height="20" aria-hidden="true">
+                  <use href="#icon-whatsapp" />
+                </svg>
+                <span className="btn__label">Falar no WhatsApp</span>
+              </a>
             </div>
 
             <div className="contact-form-wrap" data-aos="fade-left">
