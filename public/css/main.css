@@ -1048,6 +1048,8 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 .contact-info__label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); }
 .contact-info__list a { font-size: 1.05rem; transition: color var(--dur-fast); }
 .contact-info__list a:hover { color: var(--blue-neon); }
+.contact-whatsapp { margin-top: 32px; }
+.contact-whatsapp svg { flex-shrink: 0; }
 
 .contact-form-wrap {
     position: relative;
@@ -1100,6 +1102,8 @@ main { position: relative; z-index: 1; background: var(--bg-primary); }
 }
 .form-success h3 { color: var(--text-primary); font-size: 1.1rem; margin-bottom: 4px; }
 .form-success p { color: var(--text-secondary); font-size: 0.9rem; }
+.form-success__whatsapp { margin-top: 16px; }
+.form-success__whatsapp svg { flex-shrink: 0; }
 
 /* ============ 19. FOOTER ============ */
 .footer {
