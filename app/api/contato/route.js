@@ -1,9 +1,6 @@
-
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { validateContact } from "@/lib/validateContact";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Serverless route (runs on Vercel like any other Next.js API route —
 // no separate backend/server needed). Validates the payload and sends
@@ -15,6 +12,8 @@ export async function POST(request) {
   if (!valid) {
     return NextResponse.json({ errors }, { status: 400 });
   }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     await resend.emails.send({
