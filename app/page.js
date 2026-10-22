@@ -1,317 +1,273 @@
-import BodyClass from "@/components/BodyClass";
-import IconSprite from "@/components/IconSprite";
-import {
-  getServices,
-  getProducts,
-  getDifferentiators,
-  getStats,
-  getProcessSteps,
-} from "@/lib/content";
+import ContactSection from "@/components/ContactSection";
 
-export const metadata = {
-  title: "We Build The Future · Hydra Technologies",
-  description:
-    "Hydra Technologies — desenvolvimento web, apps, sistemas empresariais, automação, IA e cloud com design premium.",
-  openGraph: {
-    title: "We Build The Future · Hydra Technologies",
-    description:
-      "Hydra Technologies — desenvolvimento web, apps, sistemas empresariais, automação, IA e cloud com design premium.",
-    type: "website",
-    images: ["/images/logo.jpeg"],
-  },
-};
+const STACK = ["Next.js", "React", "Java", "Spring Boot", "PostgreSQL", "Node.js", "Vercel", "ESP32", "MQTT", "Three.js"];
 
-export default function HomePage() {
-  const services = getServices();
-  const products = getProducts();
-  const differentiators = getDifferentiators();
-  const stats = getStats();
-  const processSteps = getProcessSteps();
-
+function Check() {
   return (
-    <>
-      <BodyClass className="page--home" />
+    <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+      <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" d="m4.5 10.5 3.5 3.5 7.5-8" />
+    </svg>
+  );
+}
 
-      <main id="main">
-        {/* ============ HERO ============ */}
-        <section className="hero" id="home">
-          <div className="hero__bg" aria-hidden="true">
-            <div className="hero__aurora"></div>
-            <div className="hero__grid"></div>
-            <canvas id="particlesCanvas" className="hero__particles"></canvas>
-            <svg className="hero__lines" viewBox="0 0 1440 900" preserveAspectRatio="none" aria-hidden="true">
-              <path className="hero__line hero__line--1" d="M-100,650 C 300,500 500,750 1540,300" />
-              <path className="hero__line hero__line--2" d="M-100,300 C 400,150 700,500 1540,150" />
-              <path className="hero__line hero__line--3" d="M-100,800 C 500,850 900,600 1540,700" />
-            </svg>
-          </div>
-
-          <div className="container hero__content">
-            <p className="eyebrow" data-aos="fade-up">
-              Hydra Technologies
+function Chapter({ id, n, kicker, title, lead, items, cta, service, badge }) {
+  return (
+    <section id={id} className="chapter" data-scene={id} aria-labelledby={`${id}-title`}>
+      <div className="chapter__sticky">
+        <div className="container chapter__inner">
+          <div className="chapter__copy">
+            <p className="kicker" data-reveal>
+              <span>{n}</span> {kicker}
+              {badge && <em className="badge">{badge}</em>}
             </p>
-            <h1 className="hero__title" data-split-title>
-              <span className="line">Sua Tecnologia,</span>
-              <span className="line hero__title-gradient">Nossa Missão.</span>
-            </h1>
-            <p className="hero__subtitle" data-aos="fade-up" data-aos-delay="150">
-              Transformamos ideias em soluções digitais inteligentes.
+            <h2 id={`${id}-title`} className="h2" data-reveal dangerouslySetInnerHTML={{ __html: title }} />
+            <p className="lead" data-reveal>
+              {lead}
             </p>
-            <div className="hero__actions" data-aos="fade-up" data-aos-delay="250">
-              <a href="/contato" className="btn btn--primary btn--magnetic btn--lg" data-magnetic>
-                <span className="btn__label">Solicitar orçamento</span>
-              </a>
-              <a href="#servicos" className="btn btn--ghost btn--lg" data-scroll-to="#servicos">
-                <span className="btn__label">Conhecer serviços</span>
-                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-                  <path fill="currentColor" d="M12 16 4 8l1.4-1.4L12 13.2l6.6-6.6L20 8Z" />
-                </svg>
-              </a>
-            </div>
-          </div>
-
-          <div className="hero__hologram" aria-hidden="true" data-tilt>
-            <div className="hologram__ring hologram__ring--1"></div>
-            <div className="hologram__ring hologram__ring--2"></div>
-            <div className="hologram__ring hologram__ring--3"></div>
-            <div className="hologram__core">
-              <img src="/images/logo.png" alt="" className="hologram__logo" />
-            </div>
-            <div className="hologram__card hologram__card--1">
-              <span className="hologram__card-label">Segurança</span>
-              <span className="hologram__card-value">LGPD</span>
-            </div>
-            <div className="hologram__card hologram__card--2">
-              <span className="hologram__card-label">Suporte</span>
-              <span className="hologram__card-value">24/7</span>
-            </div>
-          </div>
-
-          <button className="hero__scroll" data-scroll-to="#servicos" aria-label="Rolar para a próxima seção">
-            <span className="hero__scroll-line"></span>
-          </button>
-        </section>
-
-        {/* ============ SERVIÇOS ============ */}
-        <section className="section services" id="servicos">
-          <div className="container">
-            <div className="section__head" data-aos="fade-up">
-              <p className="eyebrow">O que fazemos</p>
-              <h2 className="section__title">
-                Serviços projetados para <span className="text-gradient">escalar</span> o seu negócio
-              </h2>
-            </div>
-
-            <div className="services__grid">
-              {services.map((service, i) => (
-                <article
-                  className="service-card"
-                  key={service.index}
-                  data-tilt-card
-                  data-aos="fade-up"
-                  data-aos-delay={i * 60}
-                >
-                  <div className="service-card__glow" aria-hidden="true"></div>
-                  <span className="service-card__index">{service.index}</span>
-                  <div className={`service-card__icon icon-${service.icon}`} aria-hidden="true">
-                    <svg viewBox="0 0 32 32" width="28" height="28">
-                      <use href={`#icon-${service.icon}`}></use>
-                    </svg>
-                  </div>
-                  <h3 className="service-card__title">{service.title}</h3>
-                  <p className="service-card__desc">{service.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Shared icon sprite */}
-        <IconSprite />
-
-        {/* ============ PRODUTOS ============ */}
-        <section className="section products" id="produtos">
-          <div className="container">
-            <div className="section__head" data-aos="fade-up">
-              <p className="eyebrow">Produtos Hydra</p>
-              <h2 className="section__title">
-                Hardware e software, <span className="text-gradient">na mesma régua</span>
-              </h2>
-            </div>
-
-            <div className="products__grid" id="produtos-destaque">
-              {products[0] && (
-                <article className="product-card product-card--featured" data-aos="fade-up">
-                  <div className="product-card__glow" aria-hidden="true"></div>
-                  <div className="product-card__mockup" data-tilt>
-                    <div className="mockup__collar">
-                      <div className="mockup__collar-band"></div>
-                      <div className="mockup__collar-node"></div>
-                    </div>
-                  </div>
-                  <div className="product-card__body">
-                    <div className="product-card__badges">
-                      <span className="badge">Destaque</span>
-                      {products[0].comingSoon && <span className="badge badge--soon">Em Breve</span>}
-                    </div>
-                    <h3 className="product-card__title">{products[0].name}</h3>
-                    <p className="product-card__tagline">{products[0].tagline}</p>
-                    <p className="product-card__desc">{products[0].description}</p>
-                    <ul className="product-card__highlights" role="list">
-                      {products[0].highlights.map((h) => (
-                        <li key={h}>{h}</li>
-                      ))}
-                    </ul>
-                    <a href="/contato" className="btn btn--outline btn--magnetic" data-magnetic>
-                      <span className="btn__label">
-                        {products[0].comingSoon ? "Ser avisado no lançamento" : "Saiba mais"}
-                      </span>
-                    </a>
-                  </div>
-                </article>
-              )}
-
-              {products.length > 1 && (
-                <article className="product-card" data-aos="fade-up" data-aos-delay="150">
-                  <div className="product-card__glow" aria-hidden="true"></div>
-                  <div className="product-card__mockup product-card__mockup--os" data-tilt>
-                    <div className="mockup__os-orb"></div>
-                  </div>
-                  <div className="product-card__body">
-                    {products[1].comingSoon && (
-                      <div className="product-card__badges">
-                        <span className="badge badge--soon">Em Breve</span>
-                      </div>
-                    )}
-                    <h3 className="product-card__title">{products[1].name}</h3>
-                    <p className="product-card__tagline">{products[1].tagline}</p>
-                    <p className="product-card__desc">{products[1].description}</p>
-                    <ul className="product-card__highlights" role="list">
-                      {products[1].highlights.map((h) => (
-                        <li key={h}>{h}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </article>
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* ============ DIFERENCIAIS (horizontal scroll) ============ */}
-        <section className="section diff" id="diferenciais">
-          <div className="diff__head container" data-aos="fade-up">
-            <p className="eyebrow">Por que a Hydra</p>
-            <h2 className="section__title">
-              Seis razões para construir <span className="text-gradient">com a gente</span>
-            </h2>
-          </div>
-
-          <div className="diff__track-wrap">
-            <div className="diff__track" id="diffTrack">
-              {differentiators.map((d) => (
-                <article className="diff-card" key={d.title}>
-                  <div className="diff-card__icon" aria-hidden="true">
-                    <svg viewBox="0 0 32 32" width="30" height="30">
-                      <use href={`#icon-${d.icon}`}></use>
-                    </svg>
-                  </div>
-                  <h3 className="diff-card__title">{d.title}</h3>
-                  <p className="diff-card__desc">{d.description}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ============ ESTATÍSTICAS ============ */}
-        <section className="section stats">
-          <div className="stats__glow" aria-hidden="true"></div>
-          <div className="container">
-            <div className="stats__grid">
-              {stats.map((stat) => (
-                <div className="stat" key={stat.label} data-aos="fade-up">
-                  <p className="stat__value">
-                    <span>{stat.prefix}</span>
-                    <span className="stat__number" data-count-to={stat.value}>
-                      0
-                    </span>
-                    <span>{stat.suffix}</span>
-                  </p>
-                  <p className="stat__label">{stat.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* ============ PROCESSO ============ */}
-        <section className="section process" id="processo">
-          <div className="container">
-            <div className="section__head" data-aos="fade-up">
-              <p className="eyebrow">Como trabalhamos</p>
-              <h2 className="section__title">
-                Um processo <span className="text-gradient">claro</span>, do início ao suporte
-              </h2>
-            </div>
-
-            <ol className="process__timeline" role="list">
-              {processSteps.map((step, i) => (
-                <li className="process__step" key={step.order} data-aos="fade-up" data-aos-delay={i * 80}>
-                  <span className="process__order">{step.order}</span>
-                  <div className="process__body">
-                    <h3 className="process__title">{step.title}</h3>
-                    <p className="process__desc">{step.description}</p>
-                  </div>
+            <ul className="features" data-reveal>
+              {items.map((it) => (
+                <li key={it}>
+                  <Check />
+                  {it}
                 </li>
               ))}
-            </ol>
-          </div>
-        </section>
-
-        {/* ============ SOBRE (teaser) ============ */}
-        <section className="section about-teaser">
-          <div className="container about-teaser__grid">
-            <div className="about-teaser__media" data-aos="fade-right" data-tilt>
-              <div className="about-teaser__frame">
-                <div className="about-teaser__scan" aria-hidden="true"></div>
-                <img src="/images/logo.png" alt="Hydra Technologies" className="about-teaser__logo" />
-              </div>
-            </div>
-            <div className="about-teaser__content" data-aos="fade-left">
-              <p className="eyebrow">Sobre a Hydra</p>
-              <h2 className="section__title">
-                Engenharia com <span className="text-gradient">alma de produto</span>
-              </h2>
-              <p className="about-teaser__text">
-                Nascemos para provar que software brasileiro pode competir com os melhores do mundo. Cada projeto
-                passa pelas mãos de um time enxuto e obcecado por detalhes do primeiro wireframe ao último commit em
-                produção.
-              </p>
-              <a href="/sobre" className="btn btn--outline btn--magnetic" data-magnetic>
-                <span className="btn__label">Conhecer a Hydra</span>
+            </ul>
+            <div className="actions" data-reveal>
+              <a href="#contato" className="btn btn--primary" data-service={service}>
+                {cta}
               </a>
             </div>
           </div>
-        </section>
+        </div>
+        <div className="chapter__rail" aria-hidden="true">
+          <span />
+        </div>
+      </div>
+    </section>
+  );
+}
 
-        {/* ============ CTA ============ */}
-        <section className="section cta">
-          <div className="cta__bg" aria-hidden="true">
-            <div className="cta__aurora"></div>
-          </div>
-          <div className="container cta__content" data-aos="zoom-in">
-            <h2 className="cta__title">
-              Vamos construir
-              <br />
-              <span className="text-gradient">o futuro juntos.</span>
-            </h2>
-            <a href="/contato" className="btn btn--primary btn--xl btn--magnetic" data-magnetic>
-              <span className="btn__label">Solicitar orçamento</span>
+export default function Home() {
+  return (
+    <main>
+      {/* ───────── HERO ───────── */}
+      <section id="inicio" className="hero" data-scene="hero" aria-labelledby="hero-title">
+        <div className="container hero__inner">
+          <p className="kicker hero__kicker" data-reveal>
+            <span className="pulse" aria-hidden="true" /> Engenharia de software · Suzano, SP
+          </p>
+          <h1 id="hero-title" className="h1">
+            <span className="line" data-reveal>
+              Sua tecnologia,
+            </span>
+            <span className="line grad" data-reveal style={{ "--d": "120ms" }}>
+              nossa missão.
+            </span>
+          </h1>
+          <p className="lead hero__lead" data-reveal style={{ "--d": "220ms" }}>
+            Criamos <strong>sites institucionais</strong> e <strong>sistemas internos sob medida</strong> para o seu estabelecimento. Em breve,
+            dispositivos inteligentes conectados.
+          </p>
+          <div className="actions" data-reveal style={{ "--d": "320ms" }}>
+            <a href="#contato" className="btn btn--primary btn--lg" data-service="">
+              Solicitar orçamento
+            </a>
+            <a href="#sites" className="btn btn--ghost btn--lg">
+              Explorar em 3D
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                <path fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" d="M12 5v14m0 0-6-6m6 6 6-6" />
+              </svg>
             </a>
           </div>
-        </section>
-      </main>
-    </>
+          <ol className="hero__index" data-reveal style={{ "--d": "420ms" }}>
+            <li>
+              <a href="#sites">
+                <span>01</span> Sites institucionais
+              </a>
+            </li>
+            <li>
+              <a href="#sistemas">
+                <span>02</span> Sistemas internos
+              </a>
+            </li>
+            <li>
+              <a href="#iot">
+                <span>03</span> IoT <em className="badge">em breve</em>
+              </a>
+            </li>
+          </ol>
+        </div>
+        <a href="#sites" className="scroll-cue" aria-label="Rolar para a próxima seção">
+          <span className="scroll-cue__line" />
+          <span className="scroll-cue__label">role para explorar</span>
+        </a>
+      </section>
+
+      {/* ───────── STACK ───────── */}
+      <div className="marquee" aria-label="Tecnologias que usamos">
+        <div className="marquee__track">
+          {[...STACK, ...STACK].map((s, i) => (
+            <span key={i} aria-hidden={i >= STACK.length}>
+              {s}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* ───────── 01 SITES ───────── */}
+      <Chapter
+        id="sites"
+        n="01"
+        kicker="Sites institucionais"
+        title={'Sua empresa apresentada no <span class="grad">nível que ela merece.</span>'}
+        lead="Sites rápidos, bonitos e feitos para converter visitantes em clientes. Cada camada pensada: estrutura, layout, conteúdo e o botão que faz o telefone tocar."
+        items={["Design exclusivo, nada de template pronto", "Responsivo e otimizado para o Google", "Formulário e WhatsApp integrados", "Domínio, hospedagem e SSL configurados"]}
+        cta="Quero um site"
+        service="site"
+      />
+
+      {/* ───────── 02 SISTEMAS ───────── */}
+      <Chapter
+        id="sistemas"
+        n="02"
+        kicker="Sistemas internos"
+        title={'O controle do seu estabelecimento <span class="grad">em um só lugar.</span>'}
+        lead="Sistemas sob medida para a rotina do seu negócio: agenda, clientes, serviços e financeiro, acessíveis do celular ou do computador, de qualquer lugar."
+        items={["Agendamento online pelo link, 24h por dia", "Cadastro de clientes e histórico", "Financeiro e relatórios do mês", "Lembretes pelo WhatsApp em 1 clique"]}
+        cta="Quero um sistema"
+        service="sistema"
+      />
+
+      {/* ───────── 03 IOT ───────── */}
+      <Chapter
+        id="iot"
+        n="03"
+        kicker="Dispositivos inteligentes"
+        badge="em breve"
+        title={'Hardware, firmware e nuvem <span class="grad">na mesma régua.</span>'}
+        lead="Estamos levando a engenharia da Hydra para o mundo físico: dispositivos conectados que medem, automatizam e avisam, com painel na web e alertas no celular."
+        items={["Placas com ESP32 e Wi-Fi", "Sensores, motores e automação", "Comunicação MQTT com a nuvem", "Dashboard e alertas em tempo real"]}
+        cta="Quero ser avisado"
+        service="iot"
+      />
+
+      {/* ───────── 04 PORTFÓLIO ───────── */}
+      <Chapter
+        id="portfolio"
+        n="04"
+        kicker="Portfólio · Case real"
+        title={'Studio Elen Gomes: <span class="grad grad--gold">gestão e agendamento</span> de um studio de beleza.'}
+        lead="Um sistema completo, com a identidade do Studio, para organizar a agenda, os clientes, os serviços e o caixa, e deixar as clientes agendarem sozinhas pelo link."
+        items={["Login exclusivo com a marca do Studio", "Catálogo de serviços com preço e duração", "Pedidos de agendamento online", "Central de lembretes pelo WhatsApp"]}
+        cta="Quero um sistema assim"
+        service="sistema"
+      />
+
+      <section className="case" aria-labelledby="case-title">
+        <div className="container">
+          <div className="case__head">
+            <p className="kicker" data-reveal>
+              <span>Case</span> Do pedido à entrega
+            </p>
+            <h2 id="case-title" className="h3" data-reveal>
+              Feito para a rotina real de um studio de beleza.
+            </h2>
+          </div>
+          <div className="case__grid">
+            <figure className="shot" data-reveal>
+              <div className="shot__frame">
+                <img src="/images/portfolio/elen-login.jpg" alt="Tela de login do sistema do Studio Elen Gomes, com a identidade visual dourada da marca" loading="lazy" width="1200" height="750" />
+              </div>
+              <figcaption>Acesso restrito com a identidade do Studio</figcaption>
+            </figure>
+            <figure className="shot" data-reveal style={{ "--d": "120ms" }}>
+              <div className="shot__frame">
+                <img src="/images/portfolio/elen-servicos.jpg" alt="Tela de catálogo de serviços do sistema do Studio Elen Gomes com preços e duração" loading="lazy" width="1386" height="866" />
+              </div>
+              <figcaption>Catálogo de serviços: preço, duração e retorno</figcaption>
+            </figure>
+          </div>
+          <div className="case__facts">
+            <div className="fact" data-reveal>
+              <h3>Desafio</h3>
+              <p>Organizar agenda, clientes e caixa em um só lugar e reduzir faltas, sem abrir mão do WhatsApp que as clientes já usam.</p>
+            </div>
+            <div className="fact" data-reveal style={{ "--d": "80ms" }}>
+              <h3>Solução</h3>
+              <p>Painel com agenda, clientes, serviços e financeiro, mais uma página pública onde as clientes pedem horário.</p>
+            </div>
+            <div className="fact" data-reveal style={{ "--d": "160ms" }}>
+              <h3>Tecnologia</h3>
+              <p className="stack-tags">
+                <span>React / Next.js</span>
+                <span>Java · Spring Boot</span>
+                <span>PostgreSQL</span>
+                <span>Vercel + Render</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ───────── PROCESSO ───────── */}
+      <section id="processo" className="process" aria-labelledby="processo-title">
+        <div className="container">
+          <div className="process__head">
+            <p className="kicker" data-reveal>
+              <span>Como trabalhamos</span>
+            </p>
+            <h2 id="processo-title" className="h2" data-reveal>
+              Simples para você. <span className="grad">Rigoroso por dentro.</span>
+            </h2>
+          </div>
+          <ol className="steps">
+            {[
+              ["Conversa", "Entendemos sua rotina, seus clientes e o que precisa mudar. Sem compromisso."],
+              ["Proposta", "Escopo, prazo e investimento claros, por escrito, antes de começar."],
+              ["Desenvolvimento", "Entregas parciais para você acompanhar e ajustar durante o caminho."],
+              ["Entrega e suporte", "Publicamos, treinamos sua equipe e seguimos junto depois do lançamento."],
+            ].map(([t, d], i) => (
+              <li key={t} className="step" data-reveal style={{ "--d": `${i * 90}ms` }}>
+                <span className="step__n">0{i + 1}</span>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </li>
+            ))}
+          </ol>
+          <div className="why">
+            {[
+              ["Atendimento direto", "Você fala com quem desenvolve. Sem intermediários, sem telefone sem fio."],
+              ["Sob medida de verdade", "Nada de sistema genérico engessado: o software se adapta ao seu negócio."],
+              ["Tecnologia de mercado", "Java, Spring Boot, React e Next.js: a mesma base de grandes empresas."],
+              ["Tudo configurado", "Domínio, hospedagem, e-mails e publicação: você recebe pronto para usar."],
+            ].map(([t, d], i) => (
+              <div key={t} className="why__item" data-reveal style={{ "--d": `${i * 70}ms` }}>
+                <h3>{t}</h3>
+                <p>{d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <ContactSection />
+
+      {/* HUD de capítulos (desktop) */}
+      <nav className="hud" aria-label="Capítulos">
+        {[
+          ["hero", "#inicio", "Início"],
+          ["sites", "#sites", "Sites"],
+          ["sistemas", "#sistemas", "Sistemas"],
+          ["iot", "#iot", "IoT"],
+          ["portfolio", "#portfolio", "Portfólio"],
+          ["contato", "#contato", "Contato"],
+        ].map(([id, href, label]) => (
+          <a key={id} href={href} data-hud={id} className="hud__item">
+            <span className="hud__label">{label}</span>
+            <span className="hud__dot" />
+          </a>
+        ))}
+      </nav>
+    </main>
   );
 }

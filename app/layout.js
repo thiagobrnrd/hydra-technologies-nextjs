@@ -1,45 +1,74 @@
-import Navbar from "@/components/Navbar";
+import "@fontsource-variable/sora";
+import "@fontsource-variable/inter";
+import "@fontsource/jetbrains-mono/400.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource/orbitron/600.css";
+import "./globals.css";
+import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import Scripts from "@/components/Scripts";
+import Experience from "@/components/scene/Experience";
+import ScrollEngine from "@/components/ScrollEngine";
+import { SITE } from "@/lib/site";
+
+const description =
+  "Hydra Technologies cria sites institucionais e sistemas internos sob medida para o seu estabelecimento — agenda online, clientes, financeiro e lembretes pelo WhatsApp. Em breve: dispositivos inteligentes e IoT.";
 
 export const metadata = {
-  metadataBase: undefined,
-  icons: {
-    icon: "/images/logo.jpeg",
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: "Hydra Technologies — Sites institucionais e sistemas sob medida",
+    template: "%s · Hydra Technologies",
   },
-  other: {
-    "theme-color": "#050505",
+  description,
+  keywords: ["criação de sites", "site institucional", "sistema de agendamento", "sistema para salão", "software sob medida", "Suzano", "IoT", "Hydra Technologies"],
+  alternates: { canonical: "/" },
+  icons: { icon: "/favicon-64.png", apple: "/apple-icon.png" },
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: SITE.url,
+    siteName: SITE.name,
+    title: "Hydra Technologies — Sua tecnologia, nossa missão.",
+    description,
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Hydra Technologies" }],
   },
+  twitter: { card: "summary_large_image", title: "Hydra Technologies", description, images: ["/og.jpg"] },
+};
+
+export const viewport = {
+  themeColor: "#04060c",
+  width: "device-width",
+  initialScale: 1,
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: SITE.name,
+  url: SITE.url,
+  email: SITE.email,
+  telephone: "+55 11 99910-1739",
+  image: `${SITE.url}/og.jpg`,
+  areaServed: "BR",
+  address: { "@type": "PostalAddress", addressLocality: "Suzano", addressRegion: "SP", addressCountry: "BR" },
+  description,
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="pt-BR">
-      <head>
-        {/* Fonts: Space Grotesk (display) with Inter fallback.
-            Orbitron is loaded separately for the "Hydra" wordmark, to
-            match the geometric, wide-tracked lettering of the logo. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@300..700&family=Orbitron:wght@500..700&display=swap"
-          rel="stylesheet"
-        />
-        <link rel="stylesheet" href="/css/main.css" />
-      </head>
-      <body className="page">
-        <div className="noise-overlay" aria-hidden="true"></div>
-        <div className="cursor-dot" aria-hidden="true"></div>
-        <div className="cursor-ring" aria-hidden="true"></div>
-        <div className="progress-bar" id="scrollProgress" aria-hidden="true"></div>
-
-        <Navbar />
-
-        {children}
-
+      <body>
+        <a href="#conteudo" className="skip">
+          Pular para o conteúdo
+        </a>
+        <Experience />
+        <ScrollEngine />
+        <Nav />
+        <div id="conteudo" className="content">
+          {children}
+        </div>
         <Footer />
-
-        <Scripts />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>
   );

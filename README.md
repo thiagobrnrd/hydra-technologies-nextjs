@@ -1,72 +1,84 @@
-# Hydra Technologies — versão Next.js
+# Hydra Technologies — site 3D (v2)
 
-Este projeto é a conversão 1:1 do site original em **Spring Boot + Thymeleaf**
-para **Next.js (React)**, que tem suporte nativo na Vercel.
+Site institucional da Hydra Technologies com experiência 3D guiada pelo scroll
+e backend próprio para **Solicitar orçamento** e **Mensagem rápida**.
 
-Nada do conteúdo, textos, classes CSS, imagens, scripts (GSAP, Lenis, AOS,
-cursor customizado, partículas, animações) ou estilos foi alterado — apenas a
-"casca" que renderiza o HTML mudou, de templates Thymeleaf para componentes
-React.
+- **Front:** Next.js 16 (App Router) · React 19 · Three.js / React Three Fiber · Lenis
+- **Back:** API Routes do Next.js (rodam como funções serverless na Vercel)
+  - `POST /api/orcamento` — formulário de orçamento
+  - `POST /api/contato` — mensagem rápida
+  - `GET  /api/orcamento` — status (`{"email":"configured"}` quando o e-mail está ok)
 
-## O que foi portado, e como
+## Estrutura
 
-| Original (Spring Boot)                          | Aqui (Next.js)                                   |
-|---------------------------------------------------|---------------------------------------------------|
-| `templates/index.html`                            | `app/page.js` (rota `/`)                           |
-| `templates/services.html`                          | `app/servicos/page.js` (rota `/servicos`)           |
-| `templates/about.html`                              | `app/sobre/page.js` (rota `/sobre`)                 |
-| `templates/contact.html`                            | `app/contato/page.js` + `components/ContactForm.js` |
-| `templates/fragments/navbar.html`                   | `components/Navbar.js`                             |
-| `templates/fragments/footer.html`                   | `components/Footer.js`                             |
-| `templates/fragments/head.html`                     | `app/layout.js` (tags de fonte, favicon, CSS)       |
-| `templates/fragments/scripts.html`                  | `components/Scripts.js`                            |
-| `ContentService.java` (listas de serviços, produtos, diferenciais, stats, processo) | `lib/content.js` (mesmos textos e valores) |
-| `ContactRequest.java` (validação Bean Validation)   | `lib/validateContact.js` (mesmas regras e mensagens) |
-| `ContactController.java` (`POST /contato`)          | `app/api/contato/route.js` (mesma lógica e log)     |
-| `static/css/main.css`                               | `public/css/main.css` (copiado sem nenhuma alteração) |
-| `static/js/*.js` (cursor, particles, animations, main) | `public/js/*.js` (copiados sem nenhuma alteração) |
-| `static/images/*`                                    | `public/images/*` (copiadas sem nenhuma alteração)  |
+```
+app/
+  layout.js            → fontes, SEO, palco 3D, navegação, rodapé
+  page.js              → home (hero + capítulos 3D + case + processo + contato)
+  contato/page.js      → página só do formulário
+  api/orcamento        → backend do orçamento
+  api/contato          → backend da mensagem rápida
+components/
+  scene/               → cena 3D (núcleo Hydra, site explodido, dashboard, IoT, notebook, portal)
+  ScrollEngine.js      → scroll suave + progresso de cada capítulo para o 3D
+  ContactForms.js      → formulários (validação, máscara de telefone, fallback WhatsApp)
+lib/
+  validation.js        → validação no servidor
+  mailer.js            → envio por Gmail SMTP ou Resend
+  emailTemplates.js    → e-mail do lead para a Hydra + resposta automática ao cliente
+  handleLead.js        → fluxo: anti-spam → validação → limite por IP → envio
+```
 
-### Por que os links usam `<a href>` em vez de `<Link>` do Next.js
+## Como o backend funciona
 
-Os scripts originais (`main.js`, `animations.js`, `cursor.js`, `particles.js`)
-escutam o evento `DOMContentLoaded` e fazem `querySelectorAll` uma única vez.
-Para o comportamento ficar **idêntico** ao site original — onde cada página é
-carregada do zero pelo servidor — a navegação entre páginas usa links `<a>`
-normais (recarregamento completo), garantindo que todos os scripts rodem de
-novo em cada navegação, exatamente como no Spring Boot/Thymeleaf.
+1. O cliente envia o formulário.
+2. O servidor valida tudo de novo, bloqueia bots (campo invisível + tempo mínimo)
+   e limita 5 envios a cada 10 min por IP.
+3. Chega um e-mail em `CONTACT_TO_EMAIL` com todos os dados e botões
+   **Responder por e-mail** e **Chamar no WhatsApp** (o "Responder" do Gmail já vai para o cliente).
+4. O cliente recebe uma resposta automática ("Recebemos seu contato…").
+5. Se o e-mail falhar ou não estiver configurado, o formulário mostra um botão
+   **Enviar pelo WhatsApp** já com a mensagem preenchida. O lead nunca se perde.
 
-### O formulário de contato
+## Variáveis de ambiente (obrigatório para os formulários)
 
-O back-end original (`ContactController`) apenas valida os campos, loga a
-solicitação no console e reexibe a página com a mensagem de sucesso — não
-envia e-mail de verdade. Isso foi replicado com uma API Route
-(`app/api/contato/route.js`) que valida com as mesmas regras/mensagens do
-`ContactRequest.java` e faz `console.log` da mesma forma. Se quiser que o
-formulário envie e-mails de verdade (Resend, SendGrid, etc.), é só me pedir.
+Na Vercel: **Project → Settings → Environment Variables** (marque Production, Preview e Development):
 
-## Como rodar localmente
+| Nome | Valor |
+|---|---|
+| `SMTP_USER` | `contato.techhydra@gmail.com` |
+| `SMTP_PASS` | senha de app do Google (16 letras) |
+| `CONTACT_TO_EMAIL` | `contato.techhydra@gmail.com` (opcional, já é o padrão) |
+
+**Como gerar a senha de app do Gmail:**
+1. Entre em <https://myaccount.google.com/security> com a conta `contato.techhydra@gmail.com`
+   e ative a **Verificação em duas etapas**.
+2. Abra <https://myaccount.google.com/apppasswords>, crie uma senha chamada "Site Hydra".
+3. Copie os 16 caracteres para `SMTP_PASS` (pode colar com espaços).
+4. Depois de salvar as variáveis, faça **Redeploy** na Vercel.
+5. Teste: abra `https://hydratechnologies.com.br/api/orcamento`. Deve aparecer `"email":"configured"`.
+
+Alternativa com Resend: defina `RESEND_API_KEY` (e `RESEND_FROM` com domínio verificado).
+Se `SMTP_USER/SMTP_PASS` existirem, o Gmail tem prioridade.
+
+## Rodar localmente
 
 ```bash
 npm install
-npm run dev
+cp .env.example .env.local   # e preencha SMTP_PASS
+npm run dev                  # http://localhost:3000
 ```
 
-Acesse `http://localhost:3000`.
+## Publicar na Vercel
 
-## Como colocar no ar na Vercel
+- **Via GitHub (recomendado):** substitua o conteúdo do repositório por esta pasta,
+  faça commit e push na branch `main`. A Vercel publica sozinha.
+- **Via CLI:** `npx vercel --prod` dentro da pasta.
 
-**Opção 1 — via GitHub (recomendado)**
-1. Suba esta pasta para um repositório no GitHub.
-2. Em [vercel.com/new](https://vercel.com/new), importe o repositório.
-3. A Vercel detecta automaticamente que é um projeto Next.js — não precisa
-   configurar nada, clique em "Deploy".
+> A Vercel detecta Next.js automaticamente. Node 18.18+ (recomendado 20 ou 22).
 
-**Opção 2 — via CLI**
-```bash
-npm install -g vercel
-vercel
-```
-Siga as instruções no terminal.
+## Editar textos e contatos
 
-Não é necessária nenhuma variável de ambiente para este projeto funcionar.
+- Telefone, e-mail e cidade: `lib/site.js`
+- Textos da home: `app/page.js`
+- Imagens do portfólio: `public/images/portfolio/`
